@@ -75,8 +75,16 @@
             <tr>
                 <th scope="col">Name</th>
                 <th scope="col">Description</th>
-                <th scope="col">User</th>
-                <th scope="col">Link</th>
+                <th scope="col">
+                    <div class="d-flex justify-content-center">
+                        User
+                    </div>
+                </th>
+                <th scope="col">
+                    <div class="d-flex justify-content-center">
+                        Link
+                    </div>
+                </th>
                 <th scope="col"></th>
             </tr>
             </thead>
@@ -86,15 +94,15 @@
                 <td th:text="${doc.docName}"></td>
                 <td th:text="${doc.description}"></td>
                 <td>
-                    <div class="d-flex justify-content-center align-middle" th:text="${doc.personName}"></div>
+                    <div class="d-flex justify-content-center" th:text="${doc.personName}"></div>
                 </td>
                 <td>
-                    <div class="d-flex justify-content-center align-middle">
+                    <div class="d-flex justify-content-center">
                         <a class="btn btn-success btn-sm" th:href="@{'/files/downloadFile/'+${doc.id}}">Download</a>
                     </div>
                 </td>
                 <td>
-                    <div class="d-flex justify-content-center align-middle">
+                    <div class="d-flex justify-content-center">
                         <a th:href="@{files/delete(docId=${doc.id})}"
                            onclick="if(!(confirm('Are you sure you want to delete this record? You should be logged as ADMIN')))return false"
                            class="btn btn-danger btn-sm">Delete</a>
