@@ -9,7 +9,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +31,11 @@ public class DocController {
         this.docStorageService = docStorageService;
     }
 
+
+    @GetMapping("/accessDenied")
+    public String error(){
+        return "accessDenied";
+    }
 
     @Transactional
     @GetMapping("/files")
@@ -69,7 +73,6 @@ public class DocController {
     @Transactional
     @GetMapping("files/delete")
     public String deleteById(@RequestParam("docId") Long id) {
-        System.out.println("Hello "+id);
         docStorageService.deleteById(id);
         return "redirect:/files";
     }

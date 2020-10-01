@@ -1,10 +1,12 @@
 package com.example.uploaddownloadfilestodb.securityconfig;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.access.AccessDeniedHandler;
 
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -22,7 +24,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .inMemoryAuthentication()
                 .passwordEncoder(passwordEncoder)
                 .withUser("admin")
-                //.password("$2a$10$xnQcn0Hmg.G/C63BHwFw6O7EJP3TiO2hjmI/AV4AGZxlUnwE6koia")
                 .password("$2a$10$3OzF/2DKs9PalLiVvbhsjuuWlb.q8TSpNplUIz98TDhtnaBZFNV7u")
                 .roles("ADMIN")
                 .and()
@@ -36,14 +37,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/files/delete").hasRole("ADMIN")
-                .antMatchers("/files").hasAnyRole("USER","ADMIN")
+                .antMatchers("/files/**").hasAnyRole("USER", "ADMIN")
                 .anyRequest().permitAll()
                 .and()
                 .formLogin()
-                .defaultSuccessUrl("/");
+                .defaultSuccessUrl("/")
+                .and()
+                .exceptionHandling().accessDeniedPage("/accessDenied");
 
         http
                 .csrf().disable()
                 .cors().disable();
+    }
+
+
+    @Bean
+    public AccessDeniedHandler accessDeniedHandler() {
+        return new CustomAccessDeniedHandler();
     }
 }
