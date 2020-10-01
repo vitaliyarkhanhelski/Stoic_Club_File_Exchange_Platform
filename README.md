@@ -1,3 +1,3 @@
 # Stoic_Club_File_Exchange_Platform
 File Exchange Warsaw Stoic Club Platform
-Will be developing
+Will be developing depending on the needs
