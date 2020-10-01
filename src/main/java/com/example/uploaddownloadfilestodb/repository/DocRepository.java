@@ -11,5 +11,6 @@ public interface DocRepository extends JpaRepository<Doc, Integer> {
     List<Doc> findAllByOrderByIdDesc();
 //    @Transactional
     void deleteById (Long id);
+    @Transactional
     Optional<Doc> findById(Long id);
 }
