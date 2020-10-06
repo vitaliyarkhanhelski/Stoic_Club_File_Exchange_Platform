@@ -18,6 +18,17 @@ body {
 /*    bottom: 100px;*/
 /*}*/
 
+.gradient {
+    background-image: linear-gradient(#061647, #040616)
+}
+
+h1 {
+    color: #e33022;
+    text-align: center;
+    font-weight: bold;
+    text-shadow: 3px 3px 5px #061647;
+}
+
 body .bg {
     position: absolute;
     z-index: -1;
