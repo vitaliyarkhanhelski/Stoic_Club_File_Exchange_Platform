@@ -29,6 +29,10 @@ h1 {
     text-shadow: 3px 3px 5px #061647;
 }
 
+/*.shadow{*/
+/*    box-shadow: 5px 5px 6px #061647;*/
+/*}*/
+
 body .bg {
     position: absolute;
     z-index: -1;
