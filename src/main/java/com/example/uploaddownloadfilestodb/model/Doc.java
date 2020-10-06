@@ -25,6 +25,7 @@ public class Doc {
     private String docSize;
     private String uploadTime;
     private String personName;
+    private boolean isArchive;
 
     @Lob
     @Basic(fetch=FetchType.LAZY)
@@ -38,5 +39,6 @@ public class Doc {
         this.uploadTime = uploadTime;
         this.personName = personName;
         this.data = data;
+        this.isArchive=false;
     }
 }

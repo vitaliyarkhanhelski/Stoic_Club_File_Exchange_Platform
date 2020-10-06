@@ -2,9 +2,21 @@
 /*    width: 90%;*/
 /*}*/
 
-body{
-    background-color: #d2e5ea;
+html {
+    scroll-behavior: smooth;
 }
+
+body {
+    background-color: #eaf1f3;
+    font-family: "Nunito", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+/*.myBody{*/
+/*    margin-bottom: 100px;*/
+/*    padding-bottom: 100px;*/
+/*    position: relative;*/
+/*    bottom: 100px;*/
+/*}*/
 
 body .bg {
     position: absolute;
@@ -16,10 +28,18 @@ body .bg {
     opacity: .5;
     width: 100%;
     height: 100%;
-    background: #d2e5ea url("greece.jpeg") center fixed;
+    background: #d2e5ea url("../photos/marble.jpeg") center fixed;
     /*border: 2px solid black;*/
     position: fixed;
 }
+
+/*.footer {*/
+/*    position: relative;*/
+/*    left: 0;*/
+/*    bottom: 0;*/
+/*    width: 100%;*/
+
+/*}*/
 
 /*body{*/
 /*    background-color: #f6f6f6;*/

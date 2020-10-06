@@ -1,5 +1,6 @@
 package com.example.uploaddownloadfilestodb.securityconfig;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -13,6 +14,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
     public SecurityConfig(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
     }
@@ -37,6 +39,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/files/delete").hasRole("ADMIN")
+                .antMatchers("/files/archive").hasRole("ADMIN")
                 .antMatchers("/files/**").hasAnyRole("USER", "ADMIN")
                 .anyRequest().permitAll()
                 .and()

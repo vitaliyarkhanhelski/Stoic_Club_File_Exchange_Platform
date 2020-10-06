@@ -28,7 +28,6 @@ public class DocStorageService {
         String docName = file.getOriginalFilename();
 
         try {
-
             Doc doc = new Doc(docName, description,
                     file.getContentType(), formatting(file.getSize() * 0.00000095367432), getDate(), personName, file.getBytes());
             return docRepository.save(doc);
@@ -45,7 +44,12 @@ public class DocStorageService {
 
 
     public List<Doc> getFiles() {
-        return docRepository.findAllByOrderByIdDesc();
+        return docRepository.findAllByIsArchiveIsFalseOrderByIdDesc();
+    }
+
+
+    public List<Doc> getArchive() {
+        return docRepository.findAllByIsArchiveIsTrueOrderByIdDesc();
     }
 
 
@@ -61,7 +65,15 @@ public class DocStorageService {
         return currentDateTime.format(formatter);
     }
 
+    
     public void deleteById(long id) {
         docRepository.deleteById( id);
+    }
+
+    public void archiveById(Long id) {
+        Doc doc = docRepository.findById(id).get();
+        if (doc.isArchive()) doc.setArchive(false);
+        else doc.setArchive(true);
+        docRepository.save(doc);
     }
 }

@@ -33,39 +33,50 @@ public class DocController {
 
 
     @GetMapping("/accessDenied")
-    public String error(){
+    public String error() {
         return "accessDenied";
     }
 
+
     @Transactional
     @GetMapping("/files")
-    public String get(ModelMap map){
-        List<Doc> docs = docStorageService.getFiles();
-        map.put("docs", docs);
+    public String get(ModelMap map, @RequestParam(value = "page", required = false) String page) {
+        if (page == null) {
+            List<Doc> docs = docStorageService.getFiles();
+            map.put("docs", docs);
+            map.put("flag", false);
+            map.put("title", "Files");
+            map.put("filesCount", docs.size());
+
+        } else {
+            List<Doc> docs = docStorageService.getArchive();
+            map.put("docs", docs);
+            map.put("flag", true);
+            map.put("title", "Files/Archive");
+            map.put("filesCount", docs.size());
+
+        }
         return "doc";
     }
 
 
-
     @PostMapping("/files/uploadFiles")
-    public String uploadMultipleFiles(@Size(max=20971520) @RequestParam("files") MultipartFile[] files
-            ,@RequestParam String personName
-            ,@RequestParam String description
-
-            , ModelMap map){
-
+    public String uploadMultipleFiles(@Size(max = 20971520) @RequestParam("files") MultipartFile[] files
+            , @RequestParam(required = false) String personName
+            , @RequestParam(required = false) String description
+            , ModelMap map) {
         for (MultipartFile file : files)
-                docStorageService.saveFile(file, personName, description);
+            docStorageService.saveFile(file, personName, description);
         return "redirect:/files";
     }
 
 
     @GetMapping("/files/downloadFile/{fileId}")
-    public ResponseEntity<ByteArrayResource> downloadFile(@PathVariable Long fileId){
+    public ResponseEntity<ByteArrayResource> downloadFile(@PathVariable Long fileId) {
         Doc doc = docStorageService.getFile(fileId).get();
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(doc.getDocType()))
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=\""+doc.getDocName()+"\"")
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=\"" + doc.getDocName() + "\"")
                 .body(new ByteArrayResource(doc.getData()));
     }
 
@@ -75,5 +86,14 @@ public class DocController {
     public String deleteById(@RequestParam("docId") Long id) {
         docStorageService.deleteById(id);
         return "redirect:/files";
+    }
+
+
+    @GetMapping("files/archive")
+    public String archiveById(@RequestParam("docId") Long id, @RequestParam(value = "archive", required = false) String archive) {
+        docStorageService.archiveById(id);
+        System.out.println("Check!!!!!!!!");
+        if (archive==null)  return "redirect:/files";
+        return "redirect:/files?page=archive";
     }
 }
