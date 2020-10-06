@@ -54,7 +54,6 @@ public class DocController {
             map.put("flag", true);
             map.put("title", "Files/Archive");
             map.put("filesCount", docs.size());
-
         }
         return "doc";
     }
@@ -62,8 +61,8 @@ public class DocController {
 
     @PostMapping("/files/uploadFiles")
     public String uploadMultipleFiles(@Size(max = 20971520) @RequestParam("files") MultipartFile[] files
-            , @RequestParam(required = false) String personName
-            , @RequestParam(required = false) String description
+            , @RequestParam(value = "personName", required = false) String personName
+            , @RequestParam(value = "description", required = false) String description
             , ModelMap map) {
         for (MultipartFile file : files)
             docStorageService.saveFile(file, personName, description);
