@@ -16,17 +16,27 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
           rel="stylesheet"/>
 
-    <link rel="stylesheet" href="css/main.css"/>
+    <link rel="stylesheet" href="/css/main.css"/>
 
-    <link rel="icon" href="photos/favicon.jpg" type="image/jpg" sizes="64x64"/>
+    <link rel="icon" href="/photos/favicon.jpg" type="image/jpg" sizes="64x64"/>
 
     <script type="text/javascript" src="js/main2.js"></script>
+
+    <style>
+        @import url("https://fonts.googleapis.com/css?family=Varela+Round");
+        @import url("https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i");
+        body {
+            background-color: #eaf1f3;
+            font-family: "Nunito", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+        }
+    </style>
+
     <title>Stoic Polemic Club</title>
 </head>
 <body>
 <div class="bg"></div>
 
-
+<!------------------------------------------Header--------------------------------------->
 <div class="dark text-dark bg-dark" style="position: sticky; top:0; z-index: 10;">
 
     <table style="width:100%">
@@ -79,6 +89,7 @@
 
 </div>
 
+<!------------------------------------------File Upload------------------------------------>
 
 <div class="container mt-2">
     <div class="form-group">
@@ -108,7 +119,14 @@
     </div>
 </div>
 
+<!------------------------------------------Tablica plików------------------------------------>
 <div class="container">
+
+    <span class="h5" th:if="${text!=null}" th:text="${text}"></span>
+    <span class="h5">
+       <a th:if="${show!=null}" th:href="@{/admin/files}">Show All Files</a>
+     </span>
+
     <div>
         <table class="table table-bordered table-striped table-dark">
             <thead class="thead-dark">

@@ -31,21 +31,18 @@ public class AdminDocController {
         map.put("docs", docStorageService.getFiles());
         map.put("flag", false);
 
-//        List<Doc> docs = new ArrayList<>();
-//        if (page == null) {
-//            docs = docStorageService.getFiles();
-//            map.put("docs", docs);
-//            map.put("flag", false);
-////            map.put("title", "Files");
-////            map.put("filesCount", docs.size());
-//
-//        } else {
-//            docs = docStorageService.getArchive();
-//            map.put("docs", docs);
-//            map.put("flag", true);
-////            map.put("title", "Files/Archive");
-////            map.put("filesCount", docs.size());
-//        }
+        if (docStorageService.getFiles().size()==0)
+        map.put("text", "No files yet.");
+        return "admin";
+    }
+
+
+    @GetMapping("/files/archiveFiles")
+    public String showAdminArchivedFilesPage(ModelMap map) {
+        map.put("docs", docStorageService.getArchive());
+        map.put("flag", true);
+        if (docStorageService.getArchive().size()==0)
+            map.put("text", "No archived files yet.");
         return "admin";
     }
 
@@ -70,6 +67,10 @@ public class AdminDocController {
         docs.add(newDoc);
         map.put("docs", docs);
         map.put("flag", false);
+
+        map.put("text", "File was successfully updated.");
+        map.put("show", "show");
+
         return "admin";
     }
 
@@ -85,19 +86,13 @@ public class AdminDocController {
     }
 
 
-    @GetMapping("/files/archiveFiles")
-    public String showAdminArchivedFilesPage(ModelMap map) {
-        map.put("docs", docStorageService.getArchive());
-        map.put("flag", true);
-        return "admin";
-    }
-
-
     @Transactional
     @GetMapping("/files/delete")
-    public String deleteById(@RequestParam("docId") Long id) {
+    public String deleteById(@RequestParam("docId") Long id,
+            @RequestParam(value = "archive", required = false) String archive) {
         docStorageService.deleteById(id);
-        return "redirect:/admin/files";
+        if (archive == null) return "redirect:/admin/files";
+        return "redirect:/admin/files/archiveFiles";
     }
 
 
@@ -107,6 +102,7 @@ public class AdminDocController {
         if (archive == null) return "redirect:/admin/files";
         return "redirect:/admin/files/archiveFiles";
     }
+
 
     @Transactional
     @PostMapping("/files/findByWord")
@@ -121,6 +117,10 @@ public class AdminDocController {
         }
         map.put("docs", docs);
         map.put("flag", false);
+
+        if (docs.size() == 0) map.put("text", "No results found.");
+        else map.put("text", "Files which contain \""+word+"\".");
+        map.put("show", "show");
         return "admin";
     }
 

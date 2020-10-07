@@ -114,7 +114,7 @@
             alert('Title is empty.');
             event.preventDefault();
         }
-        if (!name.match(/^[^\s]+.+\.[a-zA-Z1-9]{1,6}$/)) {
+        if (!name.match(/^[^\s]+.*\.[a-zA-Z1-9]{1,6}$/)) {
             alert('Wrong File Name! Can\'t start with space or contain spaces in file extension. File extension not longer than 6 signs (only letters and numbers)');
             event.preventDefault();
         }

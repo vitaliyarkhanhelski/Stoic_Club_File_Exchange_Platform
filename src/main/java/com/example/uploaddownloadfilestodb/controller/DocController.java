@@ -41,24 +41,13 @@ public class DocController {
 
     @Transactional
     @GetMapping("/files")
-    public String showFiles(ModelMap map,
-                            @RequestParam(value = "page", required = false) String page) {
-        List<Doc> docs = new ArrayList<>();
-        if (page == null) {
-            docs = docStorageService.getFiles();
-            map.put("docs", docs);
-            map.put("flag", false);
-//            map.put("title", "Files");
-//            map.put("filesCount", docs.size());
+    public String showFiles(ModelMap map) {
+        map.put("docs", docStorageService.getFiles());
+        map.put("flag", false);
 
-        } else {
-            docs = docStorageService.getArchive();
-            map.put("docs", docs);
-            map.put("flag", true);
-//            map.put("title", "Files/Archive");
-//            map.put("filesCount", docs.size());
-        }
-        return "doc";
+        if (docStorageService.getFiles().size()==0)
+            map.put("text", "No files yet.");
+        return "admin";
     }
 
 
@@ -96,6 +85,11 @@ public class DocController {
         }
         map.put("docs", docs);
         map.put("flag", false);
+
+        if (docs.size() == 0) map.put("text", "No results found.");
+        else map.put("text", "Files which contain \""+word+"\".");
+        map.put("show", "show");
+
         return "doc";
     }
 }

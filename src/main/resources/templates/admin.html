@@ -33,13 +33,12 @@
     </style>
 
 
-
     <title>Stoic Polemic Club</title>
 </head>
 <body>
 <div class="bg"></div>
 
-
+<!------------------------------------------Header--------------------------------------->
 <div class="dark text-dark bg-dark" style="position: sticky; top:0; z-index: 10;">
 
     <table style="width:100%">
@@ -52,11 +51,11 @@
                             <th>
                                 <a href="/admin/files" style="padding-right: 12px;">All Files</a>
                             </th>
-                            <th style="color: #307df6"> | </th>
+                            <th style="color: #307df6"> |</th>
                             <th>
                                 <a href="/admin/schedule" style="padding-right: 12px; padding-left: 12px">Schedule</a>
                             </th>
-                            <th style="color: #307df6"> | </th>
+                            <th style="color: #307df6"> |</th>
                             <th>
                                 <a href="/admin/password" style="padding-left: 12px">Change Password</a>
                             </th>
@@ -96,7 +95,7 @@
 
 </div>
 
-
+<!------------------------------------------File Upload--------------------------------------->
 <div class="container mt-2">
     <div class="form-group">
         <div class="p-3 mb-2 bg-dark text-white" style="border-radius: 10px;">
@@ -120,7 +119,6 @@
 
                     <input type="submit" value="Upload" class="btn btn-primary btn-sm">
                     <span style="float:right;margin-top: 5px; padding-left: 20px">
-<!--                         <a th:if="${!flag}" th:href="@{/files(page='archive')}" class="btn btn-light btn-sm ">Show Archive</a>-->
                          <a th:if="${!flag}" th:href="@{/admin/files/archiveFiles}" class="btn btn-light btn-sm ">Show Archive</a>
                          <a th:if="${flag}" th:href="@{/admin/files}" class="btn btn-warning btn-sm ">Show Current</a>
                     </span>
@@ -130,7 +128,12 @@
     </div>
 </div>
 
+<!------------------------------------------Tablica Plików--------------------------------------->
 <div class="container">
+    <span class="h5" th:if="${text!=null}" th:text="${text}"></span>
+    <span class="h5">
+       <a th:if="${show!=null}" th:href="@{/admin/files}">Show All Files</a>
+     </span>
     <div>
         <table class="table table-bordered table-striped table-dark">
             <thead class="thead-dark">
@@ -166,8 +169,8 @@
                 <td>
                     <div class="d-flex justify-content-center">
                         <div>
-<!--                            <a th:href="@{/admin/files/delete(docId=${doc.id})}"-->
-<!--                               class="btn btn-danger btn-sm">Update</a>-->
+                            <!--                            <a th:href="@{/admin/files/delete(docId=${doc.id})}"-->
+                            <!--                               class="btn btn-danger btn-sm">Update</a>-->
                             <a th:href="@{/admin/files/showFormForUpdate(docId=${doc.id})}"
                                class="btn btn-info btn-sm">Update</a>
 
@@ -175,19 +178,22 @@
                         <span style="padding-left: 5px"></span>
                         <div>
                             <a class="btn btn-warning btn-sm" th:if="${doc.archive}"
-                               th:href="@{/admin/files/archive(docId=${doc.id}, archive='archive')}"
-                               onclick="if(!(confirm('Are you sure you want to unarchive this record?')))return false"
-                            >Archive</a>
+                               th:href="@{/admin/files/archive(docId=${doc.id}, archive='archive')}">
+<!--                               onclick="if(!(confirm('Are you sure you want to unarchive this file?')))return false">-->
+                            Archive</a>
                             <a class="btn btn-light btn-sm" th:if="${!doc.archive}"
-                               th:href="@{/admin/files/archive(docId=${doc.id})}"
-                               onclick="if(!(confirm('Are you sure you want to archive this record?')))return false"
-                            >Archive</a>
+                               th:href="@{/admin/files/archive(docId=${doc.id})}">
+<!--                               onclick="if(!(confirm('Are you sure you want to archive this file?')))return false">-->
+                            Archive</a>
                         </div>
 
                         <span style="padding-left: 5px"></span>
                         <div>
-                            <a th:href="@{/admin/files/delete(docId=${doc.id})}"
-                               onclick="if(!(confirm('Are you sure you want to delete this record?')))return false"
+                            <a th:if="${doc.archive}" th:href="@{/admin/files/delete(docId=${doc.id}, archive='archive')}"
+                               onclick="if(!(confirm('Are you sure you want to delete this file?')))return false"
+                               class="btn btn-danger btn-sm">Delete</a>
+                            <a  th:if="${!doc.archive}" th:href="@{/admin/files/delete(docId=${doc.id})}"
+                               onclick="if(!(confirm('Are you sure you want to delete this file?')))return false"
                                class="btn btn-danger btn-sm">Delete</a>
                         </div>
                     </div>
