@@ -47,7 +47,7 @@ public class DocController {
 
         if (docStorageService.getFiles().size()==0)
             map.put("text", "No files yet.");
-        return "admin";
+        return "doc";
     }
 
 
