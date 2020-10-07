@@ -8,10 +8,15 @@ import java.util.List;
 import java.util.Optional;
 
 public interface DocRepository extends JpaRepository<Doc, Integer> {
+    @Transactional
     List<Doc> findAllByIsArchiveIsFalseOrderByIdDesc();
 
     @Transactional
     List<Doc> findAllByIsArchiveIsTrueOrderByIdDesc();
+
+    @Transactional
+    List<Doc> findAll();
+
 
     void deleteById (Long id);
     @Transactional

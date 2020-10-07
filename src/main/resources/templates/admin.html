@@ -31,17 +31,21 @@
 
     <table style="width:100%">
         <tr>
-            <td style="width:30%; padding-left: 10px; color: white">
+            <td style="font-size: 1em; width:30%; padding-left: 10px; color: white">
 
                 <nav class="navbar">
                     <table>
                         <tr class="text-uppercase">
-                            <th >
-                                <a href="/files" style="padding-right: 12px;">All Files</a>
+                            <th>
+                                <a href="/admin/files" style="padding-right: 12px;">All Files</a>
                             </th>
                             <th style="color: #307df6"> | </th>
-                            <th >
-                                <a href="/schedule" style="padding-left: 12px">Schedule</a>
+                            <th>
+                                <a href="/admin/schedule" style="padding-right: 12px; padding-left: 12px">Schedule</a>
+                            </th>
+                            <th style="color: #307df6"> | </th>
+                            <th>
+                                <a href="/admin/password" style="padding-left: 12px">Change Password</a>
                             </th>
                         </tr>
                     </table>
@@ -49,9 +53,10 @@
 
             </td>
 
-            <td style="width:40%; font-weight: bold; padding-top: 10px; text-align: center"><h5><a href="/"
-                                                                                                   style="color: white">Stoic Polemic
-                Club</a></h5>
+            <td style="width:40%; font-weight: bold; padding-top: 10px; text-align: center">
+                <h5>
+                    <a href="/" style="color: white">Stoic Polemic Club [Admin Mode]</a>
+                </h5>
             </td>
 
             <td style="text-align:right; width:30%;">
@@ -60,7 +65,7 @@
                     <table>
                         <tr>
                             <form method="post" th:action=@{/files/findByWord}>
-                                <td><a href="logout" class="btn btn-outline-info mr-2 btn-sm">LogOut</a></td>
+                                <td><a href="/logout" class="btn btn-outline-info mr-2 btn-sm">LogOut</a></td>
 
                                 <td><input class="form-control-sm rounded" type="text" placeholder="Search" name="word"
                                            required></td>
@@ -83,22 +88,29 @@
     <div class="form-group">
         <div class="p-3 mb-2 bg-dark text-white" style="border-radius: 10px;">
 
-            <form id="uploadFiles" name="uploadFiles" method="post" th:action=@{/files/uploadFiles}
+            <form id="uploadFiles" name="uploadFiles" method="post" th:action=@{/admin/files/uploadFiles}
                   enctype="multipart/form-data">
                 <div>
                     <div class="input-group input-group-sm rounded">
                         <input type="file" name="files" multiple required class="form-control" id="check"
                                onchange="fileValidation()"/>
                         <div class="ml-4 col-xs-2 input-group-sm">
-                            <input class="form-control rounded" id="name" type="text" placeholder="User Name" name="personName">
+                            <input class="form-control rounded" id="name" type="text" placeholder="User Name"
+                                   name="personName">
                         </div>
                     </div>
 
                     <div class="mt-2 mb-2 input-group-sm">
-                        <input class="form-control rounded" id="description" type="text" placeholder="Description" name="description">
+                        <input class="form-control rounded" id="description" type="text" placeholder="Description"
+                               name="description">
                     </div>
 
                     <input type="submit" value="Upload" class="btn btn-primary btn-sm">
+                    <span style="float:right;margin-top: 5px; padding-left: 20px">
+<!--                         <a th:if="${!flag}" th:href="@{/files(page='archive')}" class="btn btn-light btn-sm ">Show Archive</a>-->
+                         <a th:if="${!flag}" th:href="@{/admin/files/archiveFiles}" class="btn btn-light btn-sm ">Show Archive</a>
+                         <a th:if="${flag}" th:href="@{/admin/files}" class="btn btn-warning btn-sm ">Show Current</a>
+                    </span>
                 </div>
             </form>
         </div>
@@ -122,6 +134,7 @@
                         Link
                     </div>
                 </th>
+                <th scope="col"></th>
             </tr>
             </thead>
             <tbody th:each="doc:${docs}">
@@ -135,6 +148,27 @@
                 <td>
                     <div class="d-flex justify-content-center">
                         <a class="btn btn-success btn-sm" th:href="@{'/files/downloadFile/'+${doc.id}}">Download</a>
+                    </div>
+                </td>
+                <td>
+                    <div class="d-flex justify-content-center">
+                        <div>
+                            <a class="btn btn-warning btn-sm" th:if="${doc.archive}"
+                               th:href="@{/admin/files/archive(docId=${doc.id}, archive='archive')}"
+                               onclick="if(!(confirm('Are you sure you want to unarchive this record?')))return false"
+                            >Archive</a>
+                            <a class="btn btn-light btn-sm" th:if="${!doc.archive}"
+                               th:href="@{/admin/files/archive(docId=${doc.id})}"
+                               onclick="if(!(confirm('Are you sure you want to archive this record?')))return false"
+                            >Archive</a>
+                        </div>
+
+                        <span style="padding-left: 5px"></span>
+                        <div>
+                            <a th:href="@{/admin/files/delete(docId=${doc.id})}"
+                               onclick="if(!(confirm('Are you sure you want to delete this record?')))return false"
+                               class="btn btn-danger btn-sm">Delete</a>
+                        </div>
                     </div>
                 </td>
             </tr>

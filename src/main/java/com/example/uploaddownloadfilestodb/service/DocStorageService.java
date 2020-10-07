@@ -76,4 +76,8 @@ public class DocStorageService {
         else doc.setArchive(true);
         docRepository.save(doc);
     }
+
+    public List<Doc> findAll() {
+        return docRepository.findAll();
+    }
 }

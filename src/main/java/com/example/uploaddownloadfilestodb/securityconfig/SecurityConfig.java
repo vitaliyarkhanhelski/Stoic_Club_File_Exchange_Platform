@@ -8,17 +8,19 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    private AuthenticationSuccessHandler authenticationSuccessHandler;
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public SecurityConfig(PasswordEncoder passwordEncoder) {
+    public SecurityConfig(AuthenticationSuccessHandler authenticationSuccessHandler, PasswordEncoder passwordEncoder) {
+        this.authenticationSuccessHandler = authenticationSuccessHandler;
         this.passwordEncoder = passwordEncoder;
     }
-
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -38,13 +40,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/files/delete").hasRole("ADMIN")
-                .antMatchers("/files/archive").hasRole("ADMIN")
+//                .antMatchers("/files/delete").hasRole("ADMIN")
+//                .antMatchers("/files/archive").hasRole("ADMIN")
+                .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/admin").hasRole("ADMIN")
                 .antMatchers("/files/**").hasAnyRole("USER", "ADMIN")
-                .anyRequest().permitAll()
+                .anyRequest().permitAll()//.authenticated()//
                 .and()
                 .formLogin()
-                .defaultSuccessUrl("/files")
+                .successHandler(authenticationSuccessHandler)
+//                .permitAll()
+//                .defaultSuccessUrl("/files")
                 .and()
                 .exceptionHandling().accessDeniedPage("/accessDenied");
 

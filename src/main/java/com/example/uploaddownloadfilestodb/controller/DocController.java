@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -40,20 +41,22 @@ public class DocController {
 
     @Transactional
     @GetMapping("/files")
-    public String get(ModelMap map, @RequestParam(value = "page", required = false) String page) {
+    public String showFiles(ModelMap map,
+                            @RequestParam(value = "page", required = false) String page) {
+        List<Doc> docs = new ArrayList<>();
         if (page == null) {
-            List<Doc> docs = docStorageService.getFiles();
+            docs = docStorageService.getFiles();
             map.put("docs", docs);
             map.put("flag", false);
-            map.put("title", "Files");
-            map.put("filesCount", docs.size());
+//            map.put("title", "Files");
+//            map.put("filesCount", docs.size());
 
         } else {
-            List<Doc> docs = docStorageService.getArchive();
+            docs = docStorageService.getArchive();
             map.put("docs", docs);
             map.put("flag", true);
-            map.put("title", "Files/Archive");
-            map.put("filesCount", docs.size());
+//            map.put("title", "Files/Archive");
+//            map.put("filesCount", docs.size());
         }
         return "doc";
     }
@@ -81,18 +84,18 @@ public class DocController {
 
 
     @Transactional
-    @GetMapping("files/delete")
-    public String deleteById(@RequestParam("docId") Long id) {
-        docStorageService.deleteById(id);
-        return "redirect:/files";
-    }
-
-
-    @GetMapping("files/archive")
-    public String archiveById(@RequestParam("docId") Long id, @RequestParam(value = "archive", required = false) String archive) {
-        docStorageService.archiveById(id);
-        System.out.println("Check!!!!!!!!");
-        if (archive==null)  return "redirect:/files";
-        return "redirect:/files?page=archive";
+    @PostMapping("/files/findByWord")
+    public String findByWord(@RequestParam(value = "word", required = false) String word, ModelMap map) {
+        List<Doc> docs = new ArrayList<>();
+        for (Doc doc : docStorageService.getFiles()) {
+            if (doc.getDocName().toLowerCase().contains(word.toLowerCase()))
+                docs.add(doc);
+            else if (doc.getDescription() != null)
+                if (doc.getDescription().toLowerCase().contains(word.toLowerCase()))
+                    docs.add(doc);
+        }
+        map.put("docs", docs);
+        map.put("flag", false);
+        return "doc";
     }
 }
