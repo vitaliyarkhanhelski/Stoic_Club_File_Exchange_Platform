@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8"/>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no"/>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"/>
 
     <!--fonts-->
     <script src="https://use.fontawesome.com/releases/v5.13.0/js/all.js" crossorigin="anonymous"></script>
@@ -16,12 +16,40 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
           rel="stylesheet"/>
 
-    <link rel="stylesheet" href="css/main.css">
+    <link type="text/css" rel="stylesheet" href="css/main.css"/>
 
-    <link rel="icon" href="photos/favicon.jpg" type="image/jpg" sizes="64x64">
+    <link rel="icon" href="photos/favicon.jpg" type="image/jpg" sizes="64x64"/>
 
-    <script type="text/javascript" src="js/main2.js"></script>
-    <title>Stoic Club</title>
+    <script type="text/javascript" src="../js/main2.js"></script>
+
+    <style>
+        @import url("https://fonts.googleapis.com/css?family=Varela+Round");
+        @import url("https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i");
+
+        body {
+            background-color: #eaf1f3;
+            font-family: "Nunito", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+        }
+
+        body .bg {
+            position: absolute;
+            z-index: -1;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            opacity: .5;
+            width: 100%;
+            height: 100%;
+            background: #d2e5ea url("../photos/marble.jpeg") center fixed;
+            /*border: 2px solid black;*/
+            position: fixed;
+        }
+    </style>
+
+
+
+    <title>Stoic Polemic Club</title>
 </head>
 <body>
 <div class="bg"></div>
@@ -55,7 +83,7 @@
 
             <td style="width:40%; font-weight: bold; padding-top: 10px; text-align: center">
                 <h5>
-                    <a href="/" style="color: white">Stoic Polemic Club [Admin Mode]</a>
+                    <a href="/admin/files" style="color: white">Stoic Polemic Club [Admin Mode]</a>
                 </h5>
             </td>
 
@@ -64,7 +92,7 @@
                 <div style="float:right;">
                     <table>
                         <tr>
-                            <form method="post" th:action=@{/files/findByWord}>
+                            <form method="post" th:action=@{/admin/files/findByWord}>
                                 <td><a href="/logout" class="btn btn-outline-info mr-2 btn-sm">LogOut</a></td>
 
                                 <td><input class="form-control-sm rounded" type="text" placeholder="Search" name="word"
@@ -152,6 +180,14 @@
                 </td>
                 <td>
                     <div class="d-flex justify-content-center">
+                        <div>
+<!--                            <a th:href="@{/admin/files/delete(docId=${doc.id})}"-->
+<!--                               class="btn btn-danger btn-sm">Update</a>-->
+                            <a th:href="@{/admin/files/showFormForUpdate(docId=${doc.id})}"
+                               class="btn btn-info btn-sm">Update</a>
+
+                        </div>
+                        <span style="padding-left: 5px"></span>
                         <div>
                             <a class="btn btn-warning btn-sm" th:if="${doc.archive}"
                                th:href="@{/admin/files/archive(docId=${doc.id}, archive='archive')}"

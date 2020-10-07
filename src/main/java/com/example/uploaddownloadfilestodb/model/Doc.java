@@ -3,15 +3,16 @@ package com.example.uploaddownloadfilestodb.model;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
-import javax.transaction.Transactional;
 
 @NoArgsConstructor
 @Getter
 @Setter
 @Entity
 @Table
+@ToString
 public class Doc {
 
     @Id
@@ -40,5 +41,21 @@ public class Doc {
         this.personName = personName;
         this.data = data;
         this.isArchive=false;
+    }
+
+    public boolean isArchive() {
+        return isArchive;
+    }
+
+    public boolean getIsArchive() {
+        return isArchive;
+    }
+
+    public void setArchive(boolean archive) {
+        isArchive = archive;
+    }
+
+    public void setIsArchive(boolean archive) {
+        isArchive = archive;
     }
 }

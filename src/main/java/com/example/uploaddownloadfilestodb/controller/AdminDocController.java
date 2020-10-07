@@ -5,10 +5,7 @@ import com.example.uploaddownloadfilestodb.service.DocStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
@@ -52,6 +49,31 @@ public class AdminDocController {
         return "admin";
     }
 
+
+    @GetMapping("/files/showFormForUpdate")
+    public String showFormForUpdate(@RequestParam("docId") Long id, ModelMap map) {
+        Doc doc = docStorageService.findById(id);
+        map.put("doc", doc);
+        return "form";
+    }
+
+
+    @PostMapping("files/update")
+    public String save(@ModelAttribute("doc") Doc doc, ModelMap map) {
+        Doc newDoc = docStorageService.findById(doc.getId());
+        newDoc.setDocName(doc.getDocName());
+        newDoc.setPersonName(doc.getPersonName());
+        newDoc.setDescription(doc.getDescription());
+        newDoc.setArchive(doc.isArchive());
+        docStorageService.save(newDoc);
+        List<Doc> docs = new ArrayList<>();
+        docs.add(newDoc);
+        map.put("docs", docs);
+        map.put("flag", false);
+        return "admin";
+    }
+
+
     @PostMapping("/files/uploadFiles")
     public String uploadMultipleFiles(@Size(max = 20971520) @RequestParam("files") MultipartFile[] files
             , @RequestParam(value = "personName", required = false) String personName
@@ -85,4 +107,21 @@ public class AdminDocController {
         if (archive == null) return "redirect:/admin/files";
         return "redirect:/admin/files/archiveFiles";
     }
+
+    @Transactional
+    @PostMapping("/files/findByWord")
+    public String findByWord(@RequestParam(value = "word", required = false) String word, ModelMap map) {
+        List<Doc> docs = new ArrayList<>();
+        for (Doc doc : docStorageService.getFiles()) {
+            if (doc.getDocName().toLowerCase().contains(word.toLowerCase()))
+                docs.add(doc);
+            else if (doc.getDescription() != null)
+                if (doc.getDescription().toLowerCase().contains(word.toLowerCase()))
+                    docs.add(doc);
+        }
+        map.put("docs", docs);
+        map.put("flag", false);
+        return "admin";
+    }
+
 }

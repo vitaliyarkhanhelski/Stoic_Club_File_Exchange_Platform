@@ -38,6 +38,14 @@ public class DocStorageService {
     }
 
 
+    public Doc findById(Long id) {
+        return docRepository.findById(id).get();
+    }
+
+    public void save(Doc doc) {
+        docRepository.save(doc);
+    }
+
     public Optional<Doc> getFile(Long fileId) {
         return docRepository.findById(fileId);
     }
